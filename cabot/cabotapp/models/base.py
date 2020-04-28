@@ -282,6 +282,8 @@ class CheckGroupMixin(models.Model):
         return self.active_status_checks().exclude(calculated_status=self.CALCULATED_PASSING_STATUS)
 
 
+
+
 class Service(CheckGroupMixin):
     def update_status(self):
         self.old_overall_status = self.overall_status
@@ -321,6 +323,13 @@ class Service(CheckGroupMixin):
 
     class Meta:
         ordering = ['name']
+
+
+
+
+
+
+
 
 
 class Instance(CheckGroupMixin):
@@ -871,6 +880,18 @@ class AlertAcknowledgement(models.Model):
 
     def expires(self):
         return self.time + timedelta(minutes=settings.ACKNOWLEDGEMENT_EXPIRY)
+
+
+
+
+class Issue(models.Model):
+    Reporter = models.CharField(verbose_name='Reporter', blank=False, max_length=40),
+    Reporter_email = models.EmailField(verbose_name='Reporter Email', blank=False, max_length=60),
+    Service = models.CharField(verbose_name='Service', blank=False, max_length=40),
+    complain = models.TextField(verbose_name='Query', blank=False, max_length=1500),
+
+    def  __str__(self):
+        return self.Reporter
 
 
 class UserProfile(models.Model):

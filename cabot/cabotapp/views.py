@@ -31,7 +31,7 @@ from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
 from models import (GraphiteStatusCheck, HttpStatusCheck, ICMPStatusCheck,
                     Instance, JenkinsStatusCheck, Service, Shift, StatusCheck,
                     StatusCheckResult, UserProfile, get_custom_check_plugins,
-                    get_duty_officers)
+                    get_duty_officers, Issue)
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from tasks import run_status_check as _run_status_check
@@ -43,6 +43,7 @@ class LoginRequiredMixin(object):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(LoginRequiredMixin, self).dispatch(*args, **kwargs)
+
 
 
 @login_required
@@ -57,6 +58,20 @@ def subscriptions(request):
         'duty_officers': get_duty_officers(),
         'custom_check_types': get_custom_check_plugins(),
     })
+
+
+def report_issue(request):
+    #return render(request, 'cabotapp/report_issue.html')
+    form = Issue()
+
+    if request.method == "POST":
+        form = Issue(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+            return ServiceListView()
+        else:
+            pass
+    return render(request, 'cabotapp/report_issue.html',{'form':form})
 
 
 @login_required
