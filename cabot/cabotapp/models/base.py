@@ -325,12 +325,17 @@ class Service(CheckGroupMixin):
         ordering = ['name']
 
 
+class Issue(models.Model):
+    class Meta:
+        ordering = ['added_time']
 
-
-
-
-
-
+    #id = models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+    reporter = models.CharField(verbose_name='Reporter', blank=False, max_length=40)
+    reporter_email = models.EmailField(verbose_name='Reporter_Email', blank=False, max_length=60)
+    service = models.CharField(verbose_name='Service', blank=False, max_length=40)
+    complain = models.TextField(verbose_name='Query', blank=False, max_length=1500)
+    added_time = models.DateTimeField(verbose_name="Time_Reported", auto_now_add=True)
+            
 
 class Instance(CheckGroupMixin):
     def duplicate(self):
@@ -882,16 +887,6 @@ class AlertAcknowledgement(models.Model):
         return self.time + timedelta(minutes=settings.ACKNOWLEDGEMENT_EXPIRY)
 
 
-
-
-class Issue(models.Model):
-    Reporter = models.CharField(verbose_name='Reporter', blank=False, max_length=40),
-    Reporter_email = models.EmailField(verbose_name='Reporter Email', blank=False, max_length=60),
-    Service = models.CharField(verbose_name='Service', blank=False, max_length=40),
-    complain = models.TextField(verbose_name='Query', blank=False, max_length=1500),
-
-    def  __str__(self):
-        return self.Reporter
 
 
 class UserProfile(models.Model):

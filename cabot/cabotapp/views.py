@@ -38,6 +38,7 @@ from tasks import run_status_check as _run_status_check
 
 from .graphite import get_data, get_matching_metrics
 
+from . import app_forms
 
 class LoginRequiredMixin(object):
     @method_decorator(login_required)
@@ -62,16 +63,24 @@ def subscriptions(request):
 
 def report_issue(request):
     #return render(request, 'cabotapp/report_issue.html')
-    form = Issue()
+    form = app_forms.IssueReportForm()
 
     if request.method == "POST":
-        form = Issue(request.POST)
+        form = app_forms.IssueReportForm(request.POST)
         if form.is_valid():
+            print(form.cleaned_data["reporter"])
             form.save(commit=True)
             return ServiceListView()
         else:
-            pass
+            print("something is wrong")
+
     return render(request, 'cabotapp/report_issue.html',{'form':form})
+
+
+def report_list(request):
+    issues_list = Issue.objects.order_by("added_time")
+    issues_dict = {"issues_list" : issues_list}
+    return render(request, 'cabotapp/reported_issues.html', context=issues_dict)
 
 
 @login_required

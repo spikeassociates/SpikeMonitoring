@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+  <div class="col-xs-12">
+    <div class="col-xs-1"><h2><i class="fa fa-wpform"></i></h2></div>
+    <div class="col-xs-10"><h2>Reported Issues</h2></div>
+  </div>
+</div>
+
+<div class="container">
+
+	{% if issues_list %}
+	<div>
+	<table>
+		<thead>
+		<th>Date</th>
+		<th>Reported by</th>
+		</thead>
+
+		{% for issue in issues_list %}
+		<tr>
+			<td>{{issue.date}}</td>
+			<td>{{issue.name}}</td>
+		</tr>
+		{% endfor %}
+	</table>
+	{% else %}
+		<p> NO Report FOUND</p>
+	</div>
+	{% endif %}
+
+{% endblock %}
