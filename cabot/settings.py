@@ -312,3 +312,4 @@ if AUTH_GOOGLE_OAUTH2:
 EXPOSE_USER_API = force_bool(os.environ.get('EXPOSE_USER_API', False))
 ENABLE_SUBSCRIPTION = force_bool(os.environ.get('ENABLE_SUBSCRIPTION', True))
 ENABLE_DUTY_ROTA = force_bool(os.environ.get('ENABLE_DUTY_ROTA', True))
+ENABLE_MANUAL_REPORTING = force_bool(os.environ.get('ENABLE_MANUAL_REPORTING', True))

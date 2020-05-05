@@ -31,7 +31,7 @@ from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
 from models import (GraphiteStatusCheck, HttpStatusCheck, ICMPStatusCheck,
                     Instance, JenkinsStatusCheck, Service, Shift, StatusCheck,
                     StatusCheckResult, UserProfile, get_custom_check_plugins,
-                    get_duty_officers, Issue)
+                    get_duty_officers)
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from tasks import run_status_check as _run_status_check
@@ -61,26 +61,24 @@ def subscriptions(request):
     })
 
 
-def report_issue(request):
-    #return render(request, 'cabotapp/report_issue.html')
-    form = app_forms.IssueReportForm()
-
+def report_list(request , service_name):
+    form = app_forms.IssueReport()
+    if request.user.is_authenticated():
+        form = app_forms.IssueReport(initial={'name':request.user.username , 'email':request.user.email})
+    
+    
     if request.method == "POST":
-        form = app_forms.IssueReportForm(request.POST)
+        form = app_forms.IssueReport(request.POST)
         if form.is_valid():
-            print(form.cleaned_data["reporter"])
-            form.save(commit=True)
-            return ServiceListView()
+            print(form.cleaned_data["name"])
+            print(service_name)
+            print(form.cleaned_data["email"])
+            print(form.cleaned_data["complain"])
+            return redirect('services')
         else:
             print("something is wrong")
 
-    return render(request, 'cabotapp/report_issue.html',{'form':form})
-
-
-def report_list(request):
-    issues_list = Issue.objects.order_by("added_time")
-    issues_dict = {"issues_list" : issues_list}
-    return render(request, 'cabotapp/reported_issues.html', context=issues_dict)
+    return render(request, 'cabotapp/reported_issues.html', {'form':form, 'service_name':service_name})
 
 
 @login_required

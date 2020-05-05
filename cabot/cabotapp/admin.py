@@ -5,7 +5,7 @@ from polymorphic.admin import (PolymorphicChildModelAdmin,
 from .alert import AlertPlugin, AlertPluginUserData
 from .models import (AlertAcknowledgement, Instance, JenkinsConfig, Service,
                      ServiceStatusSnapshot, Shift, StatusCheck,
-                     StatusCheckResult, UserProfile, Issue)
+                     StatusCheckResult, UserProfile)
 
 
 class StatusCheckAdmin(PolymorphicParentModelAdmin):
@@ -31,4 +31,3 @@ admin.site.register(AlertPlugin)
 admin.site.register(AlertPluginUserData)
 admin.site.register(AlertAcknowledgement)
 admin.site.register(JenkinsConfig)
-admin.site.register(Issue)

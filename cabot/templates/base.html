@@ -26,7 +26,7 @@
             <a href="{% url 'create-graphite-check' %}?service={{ service.id }}&instance={{ instance.id }}" class=""><i class="glyphicon glyphicon-signal" title="Add new metric check"></i> Graphite check</a>
           </li>
           <li>
-            <a href="{% url 'create-http-check' %}?service={{ service.id }}&instance={{ instance.id }}" class="" title="Add new HTTP check"><i class="glyphicon glyphicon-arrow-up"></i> HTTP check</a>
+            <a href="{% url 'create-http-check' %}?service={{ service.id }}&instance={{ instance.id }}"class="" title="Add new HTTP check"><i class="glyphicon glyphicon-arrow-up"></i> HTTP check</a>
           </li>
           <li>
             <a href="{% url 'create-jenkins-check' %}?service={{ service.id }}&instance={{ instance.id }}" class="" title="Add new Jenkins check"><i class="glyphicon glyphicon-ok"></i> Jenkins check</a>
@@ -43,10 +43,10 @@
         </ul>
       </li>
     </ul>
-    <li>
-      <a href="/report/issue" class="" title="Report an Issue"><i class="glyphicon glyphicon-plus-sign"></i> Report an Issue</a>
+<!--    <li class="{% if not ENABLE_MANUAL_REPORTING%}hidden{%endif%}">
+      <a href="/report/list" class="" title="Report an Issue"><i class="glyphicon glyphicon-plus-sign"></i> Report an Issue</a>
     </li>
-  </ul>
+  </ul> -->
   <ul class="nav navbar-nav navbar-right">
           <li class="{% if not ENABLE_SUBSCRIPTION%}hidden{%endif%}">
             <a href="{% url 'subscriptions' %}"><i class="fa fa-table"></i> Alert subscriptions</a>

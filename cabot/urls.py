@@ -16,7 +16,7 @@ from cabot.cabotapp.views import (InstanceListView, InstanceDetailView,
     InstanceUpdateView, InstanceCreateView, InstanceDeleteView,
     ServiceListView, ServicePublicListView, ServiceDetailView,
     ServiceUpdateView, ServiceCreateView, ServiceDeleteView,
-    UserProfileUpdateView, ShiftListView, subscriptions,report_issue, report_list)
+    UserProfileUpdateView, ShiftListView, subscriptions, report_list)
 
 from cabot.cabotapp.utils import cabot_needs_setup
 
@@ -62,8 +62,7 @@ urlpatterns = [
 
      url(r'^$', view=home_authentication_switcher,name='dashboard'),
      url(r'^subscriptions/', view=subscriptions,name='subscriptions'),
-     url(r'^report/issue/', view=report_issue,name='report_issue'),
-     url(r'^report/list/', view=report_list,name='report_list'),
+     url(r'^report/list/(?P<service_name>.+\w+)/$', view=report_list,name='report_list'),# ?P<genre_name>.+?
      url(r'^accounts/login/', view=first_time_setup_wrapper(login), name='login'),
      url(r'^accounts/logout/', view=logout, name='logout'),
      url(r'^setup/', view=SetupView.as_view(), name='first_time_setup'),
