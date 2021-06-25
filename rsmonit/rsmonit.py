@@ -146,13 +146,13 @@ def print_help():
 ##############
 
 if len(sys.argv) == 1:
-    DATE = time.strftime("%d/%b/%Y")
+    DATE = time.strftime("%Y-%m-%d")
     DEBUG = False
 
 elif len(sys.argv) == 2:
     if sys.argv[1] == "-d":
         DEBUG = True
-        DATE = time.strftime("%d/%b/%Y")
+        DATE = time.strftime("%Y-%m-%d")
     else:
         DATE = sys.argv[1]
         DEBUG = False
@@ -169,9 +169,9 @@ else:
     sys.exit(1)
 
 try:
-    time.strptime(DATE, "%d/%b/%Y")
+    time.strptime(DATE, "%Y-%m-%d")
 except:
-    print ("Error: Date malformed! You should use some date like: 04/Dec/2008")
+    print ("Error: Date malformed! You should use some date like: 2008-10-14")
     print_help()
     sys.exit(1)
 
@@ -212,7 +212,8 @@ for file in RS_LOG:
                 name = backup.split('@')[1].split(':')[0]
                 dir = re.sub("/$", "", backup.split(':')[1])
                 date = line.split()[0]
-                start_time = date.split(":")[1:3]
+                date = date.split("T")[1]
+                start_time = date.split(":")[0:2]
                 # If it exists (in the config file)
                 if name in servers.keys() and dir in servers[name].keys():
                     servers[name][dir] = state
