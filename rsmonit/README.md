@@ -6,7 +6,7 @@ I developed it in some hours under the aim of monitorize my backups, so do not t
 
 # Requirements
 
-- Python2.7
+- Python3.7
 - Standard python libraries
 - rsnapshot
 
@@ -23,13 +23,16 @@ Total:4  Error:1  Unknown:0  OK:3
 ```
 
 # Configuration
-By default you don't need to configure anything. However if your rsnapshot configuration is not the common one, you may edit these two variables.
+By default you don't need to configure anything. However if your rsnapshot configuration is not the common one, you may edit these three variables.
 
 ```py
 RS_LOG = ['/var/log/rsnapshot.log']
 RS_CONF = ['/etc/rsnapshot.conf']
+RS_LOCALHOST = 'localhost'
 ```
 
 # Author
-p4u
 
+p4u https://github.com/p4u/rsmonit
+
+adapted by Spike for our particular needs, use freely if it is useful for you.
