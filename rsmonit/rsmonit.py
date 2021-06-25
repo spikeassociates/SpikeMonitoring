@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3.7
 
 __author__ = "Pau Escrich"
 __title__ = "Rsnapshot Monitor: rsmonit"
@@ -29,7 +29,7 @@ def configServers():
         try:
             fd = open(file, 'r')
         except:
-            print "Cannot open %s for read!" % (file)
+            print ("Cannot open %s for read!" % (file))
             sys.exit(2)
 
         for line in fd.readlines():
@@ -93,21 +93,21 @@ def print_info():
                 ok += 1
             total += 1
 
-    print "State\t| Start-time\t| Backup-info"
-    print ""
+    print ("State\t| Start-time\t| Backup-info")
+    print ("")
 
     for s in sorted(servers_info, key=itemgetter('stime')):
         t = str(s['stime'])
         minute = t[len(t) - 2:len(t)]
         hour = t[0:len(t) - 2]
-        print "%s\t| %s:%s\t\t| %s %s" % (s['state'], hour, minute, s['name'], s['dir'])
+        print ("%s\t| %s:%s\t\t| %s %s" % (s['state'], hour, minute, s['name'], s['dir']))
 
     if len(servers_error) > 0:
-        print ""
+        print ("")
         sys.stderr.write("\n== Servers with errors ==\n")
         for s in servers_error:
             sys.stderr.write(s + '\n')
-        print ""
+        print ("")
 
     if len(servers_unknown) > 0:
         sys.stderr.write("\n== Servers with unknown results ==\n")
@@ -136,9 +136,9 @@ def print_noInfo():
 
 
 def print_help():
-    print "Use: %s [-d] [Date] " % (sys.argv[0])
-    print " -d: Enable debug mode (see all information)"
-    print " Date: Date you want analize (ex. 04/Dec/2008). If none, today is used."
+    print ("Use: %s [-d] [Date] " % (sys.argv[0]))
+    print (" -d: Enable debug mode (see all information)")
+    print (" Date: Date you want analize (ex. 2008-02-14). If none, today is used.")
 
 
 ##############
@@ -171,7 +171,7 @@ else:
 try:
     time.strptime(DATE, "%d/%b/%Y")
 except:
-    print "Error: Date malformed! You should use some date like: 04/Dec/2008"
+    print ("Error: Date malformed! You should use some date like: 04/Dec/2008")
     print_help()
     sys.exit(1)
 
@@ -189,7 +189,7 @@ for file in RS_LOG:
     try:
         fd = open(file, 'r')
     except:
-        print "Cannot open %s for read!" % (file)
+        print ("Cannot open %s for read!" % (file))
         sys.exit(2)
 
     for line in fd.readlines():
@@ -219,7 +219,7 @@ for file in RS_LOG:
                     times[name][dir] = start_time
                 # If it does not exist
                 elif DEBUG:
-                    print "WTF!! %s:%s found in log but not in configure" % (name, dir)
+                    print ("WTF!! %s:%s found in log but not in configure" % (name, dir))
             backup = ""
             state = "ok"
     fd.close()
