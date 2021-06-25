@@ -15,7 +15,7 @@ from operator import itemgetter
 ##### Configuration #####
 RS_LOG = ['/var/log/rsnapshot.log']
 RS_CONF = ['/etc/rsnapshot.conf']
-
+RS_LOCALHOST = 'localhost'
 
 def configServers():
     # Returns the list of servers from the configuration file in dictionary format
@@ -45,18 +45,15 @@ def configServers():
                     name = fields[1].split('@')[1].split(':')[0]
                     dir = re.sub("/$", "", fields[1].split(':')[1])
                 except IndexError:
-                    name = "localhost"
+                    name = RS_LOCALHOST
                     dir = re.sub("/$", "", fields[1])
 
-                # Aquesta condicio es un parche per evitar analitzar el
-                # localhost (TODO)
-                if not name == "localhost":
-                    if not name in SERVERS.keys():
-                        SERVERS[name] = {dir: 'none'}
-                    else:
-                        SERVERS[name][dir] = 'none'
+                if not name in SERVERS.keys():
+                    SERVERS[name] = {dir: 'none'}
+                else:
+                    SERVERS[name][dir] = 'none'
 
-                    TIMES[name] = {dir: 'none'}
+                TIMES[name] = {dir: 'none'}
 
         fd.close()
     return SERVERS, TIMES
@@ -197,7 +194,7 @@ for file in RS_LOG:
         if re.search(regexp_date, line):
             # For each word of the line, look for server@directory from backup
             for l in line.split():
-                if re.search(regexp_backup, l):
+                if re.search(regexp_backup, l) or re.search(RS_LOCALHOST, l):
                     backup = l
                     break
             # Is there error
@@ -209,8 +206,12 @@ for file in RS_LOG:
             # Have we find it? Which is the state?
             # At this point backup is something like root@server:directory
             if len(backup) > 0:
-                name = backup.split('@')[1].split(':')[0]
-                dir = re.sub("/$", "", backup.split(':')[1])
+                if re.search(RS_LOCALHOST, backup):
+                    name = RS_LOCALHOST
+                    dir = line.split(" ")[7][:-1]
+                else:
+                    name = backup.split('@')[1].split(':')[0]
+                    dir = re.sub("/$", "", backup.split(':')[1])
                 date = line.split()[0]
                 date = date.split("T")[1]
                 start_time = date.split(":")[0:2]
