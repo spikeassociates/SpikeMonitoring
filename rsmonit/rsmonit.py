@@ -43,7 +43,11 @@ def configServers():
 
                 try:
                     name = fields[1].split('@')[1].split(':')[0]
-                    dir = re.sub("/$", "", fields[1].split(':')[1])
+                    if (re.search("rsync\:", fields[1])):
+                        dir = re.sub("/$", "", fields[1].split('@')[1].split(':')[1])
+                    else:
+                        dir = re.sub("/$", "", fields[1].split(':')[1])
+
                 except IndexError:
                     name = RS_LOCALHOST
                     dir = re.sub("/$", "", fields[1])
@@ -211,7 +215,10 @@ for file in RS_LOG:
                     dir = line.split(" ")[7][:-1]
                 else:
                     name = backup.split('@')[1].split(':')[0]
-                    dir = re.sub("/$", "", backup.split(':')[1])
+                    if (re.search("rsync\:", backup.split('@')[0])):
+                        dir = re.sub("/$", "", backup.split('@')[1].split(':')[1])
+                    else:
+                        dir = re.sub("/$", "", backup.split(':')[1])
                 date = line.split()[0]
                 date = date.split("T")[1]
                 start_time = date.split(":")[0:2]
