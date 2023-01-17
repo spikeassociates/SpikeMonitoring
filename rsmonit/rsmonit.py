@@ -212,7 +212,14 @@ for file in RS_LOG:
             if len(backup) > 0:
                 if re.search(RS_LOCALHOST, backup):
                     name = RS_LOCALHOST
-                    dir = line.split(" ")[7][:-1]
+                    dirparts = line.split(" ")
+                    dirparts = dirparts[2:] # strip datetime and command
+                    dir = ''
+                    for dp in dirparts:
+                        if dp[0]=='-':
+                            continue # skip parameter
+                        dir = dp[:-1]
+                        break
                 else:
                     name = backup.split('@')[1].split(':')[0]
                     if (re.search("rsync\:", backup.split('@')[0])):
